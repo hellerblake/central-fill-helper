@@ -1,12 +1,14 @@
 package main
 
 import (
-    "log"
-    "os"
+	"log"
+	"net/http"
+	"os"
 
-    "github.com/pocketbase/pocketbase"
-    "github.com/pocketbase/pocketbase/apis"
-    "github.com/pocketbase/pocketbase/core"
+	"github.com/labstack/echo/v5"
+	"github.com/pocketbase/pocketbase"
+	"github.com/pocketbase/pocketbase/apis"
+	"github.com/pocketbase/pocketbase/core"
 )
 
 func main() {
@@ -17,7 +19,14 @@ func main() {
         e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS("./pb_public"), false))
         return nil
     })
+     
+app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
+    e.Router.GET("/hello", func(c echo.Context) error {
+        return c.String(http.StatusOK, "Hello world!")
+    }, apis.ActivityLogger(app))
 
+    return nil
+})
     if err := app.Start(); err != nil {
         log.Fatal(err)
     }
