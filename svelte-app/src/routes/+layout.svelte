@@ -1,5 +1,6 @@
 <script>
+	import Nav from '$lib/components/nav.svelte';
 	import '../app.pcss';
 </script>
-
-<slot></slot>
+		<Nav />
+		<slot />
