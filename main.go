@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"strings"
+  "path/filepath"
 
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
@@ -16,7 +17,7 @@ func main() {
 
 	// serves static files from the provided public dir (if exists)
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS("./pb_public"), false))
+		e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS(defaultPublicDir()), true))
 		return nil
 	})
 
@@ -32,4 +33,13 @@ func main() {
 	if err := app.Start(); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func defaultPublicDir() string {
+	if strings.HasPrefix(os.Args[0], os.TempDir()) {
+		// most likely ran with go run
+		return "./pb_public"
+	}
+
+	return filepath.Join(os.Args[0], "../pb_public")
 }
