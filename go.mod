@@ -1,4 +1,4 @@
-module cfh_backend
+module cfh
 
 go 1.21.6
 
