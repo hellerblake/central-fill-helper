@@ -37,26 +37,23 @@ export const authModel = readable(initAuthModel, function (set) {
 //
 // }
 
-export function getAvatarUrl(
-  model
-) {
-  if (!model) return undefined;
-  if (typeof model.avatar !== 'string' || !model.avatar) return undefined;
+export function getAvatarUrl(model) {
+	if (!model) return undefined;
+	if (typeof model.avatar !== 'string' || !model.avatar) return undefined;
 
-  return absoluteToRelative(pb.files.getUrl(model, model.avatar));
+	return absoluteToRelative(pb.files.getUrl(model, model.avatar));
 }
 
-
 function absoluteToRelative(absoluteUrl) {
-    const base = window.location.origin;
-    const absolutePath = new URL(absoluteUrl).pathname;
-    const basePath = new URL(base).pathname;
+	const base = window.location.origin;
+	const absolutePath = new URL(absoluteUrl).pathname;
+	const basePath = new URL(base).pathname;
 
-    // Check if the absolute URL is under the same origin
-    if (absoluteUrl.startsWith(base)) {
-        return absolutePath.substring(basePath.length);
-    } else {
-        // If it's not under the same origin, return the absolute URL
-        return absoluteUrl;
-    }
+	// Check if the absolute URL is under the same origin
+	if (absoluteUrl.startsWith(base)) {
+		return absolutePath.substring(basePath.length);
+	} else {
+		// If it's not under the same origin, return the absolute URL
+		return absoluteUrl;
+	}
 }
