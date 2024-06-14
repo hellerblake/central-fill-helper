@@ -66,7 +66,7 @@ export async function createBHCPDF(url, rackData, lots) {
 }
 
 // ------------ Functions ---------------
-
+ 
 function drawBHCFills(lot) {
 	const lotTextSize = 9;
 	const rotated = true;
@@ -84,6 +84,7 @@ function drawBHCFills(lot) {
 		drawText(fill.location, box.arrowBox, lot, lotTextSize, rotated);
 		if (fill.test) drawText(fill.location, 'test', fill.test);
 		if (fill.toggles) drawText(fill.location, 'toggles', fill.toggles);
+		if (fill.revalves) drawText(fill.location, 'revalve', fill.revalves);
 	});
 }
 
@@ -114,6 +115,13 @@ function combineObjects(objects) {
 			}
 		}
 
+		if (obj.revalves) {
+			if (!combinedObject[obj.location].revalves) {
+				combinedObject[obj.location].revalves = obj.revalves;
+			} else {
+				combinedObject[obj.location].revalves += obj.revalves;
+			}
+		}
 		obj.sizes.forEach((size) => {
 			const existingSize = combinedObject[obj.location].sizes.find((s) => s.name === size.name);
 			if (existingSize) {
